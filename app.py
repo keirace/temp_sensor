@@ -200,6 +200,7 @@ def on_message(client, userdata, msg):
                 userID,
                 TextSendMessage(text=f"Report:\nMax: {max_temp}°c, Min: {min_temp}°c")
             )
+            min_temp, max_temp = -1, -1
 
 def publish(msg):
     result = client.publish(topic, msg)

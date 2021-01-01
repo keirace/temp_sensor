@@ -1,0 +1,118 @@
+from m5stack import *
+from m5ui import *
+from uiflow import *
+import hat
+import time
+import hat
+from m5mqtt import M5mqtt
+
+m5mqtt = M5mqtt(CLIENT_ID, "mqtt.netpie.io", 1883, TOKEN, PASSWORD, 60)
+
+notify = False
+sec = 1000
+
+def callback(topic_data):
+  global notify, sec
+  if topic_data == 'yes':
+    pass
+  elif topic_data == 'graph':
+    notify = True
+    sec = 1000
+  elif topic_data == 'fin_graph':
+    notify == False
+  elif topic_data == 'no': 
+    notify = False
+    m5mqtt.publish("@msg/tmp", "{'ReportMax':'"+str(TempMax)+"'}")
+    m5mqtt.publish("@msg/tmp", "{'ReportMin':'"+str(TempMin)+"'}")
+  else:
+    notify = True
+    sec = int(topic_data) * 1000
+    
+m5mqtt.subscribe("@msg/settings", callback)
+m5mqtt.start()
+
+setScreenColor(0x161616)
+
+hat_ncir0 = hat.get(hat.NCIR)
+
+Record = None
+Current = None
+TempMin = None
+TempMax = None
+CurY = None
+DisplayMin = None
+DispalyMax = None
+T_line = None
+Y_BASE = None
+
+
+title0 = M5Title(title="NCIR", x=20, fgcolor=0xe1e2eb, bgcolor=0x444444)
+label0 = M5TextBox(24, 30, "Text", lcd.FONT_Default, 0x275ea8, rotate=0)
+label1 = M5TextBox(0, 115, "Text", lcd.FONT_Default, 0xb42750, rotate=0)
+label2 = M5TextBox(0, 129, "Text", lcd.FONT_Default, 0x214e9c, rotate=0)
+label3 = M5TextBox(0, 144, "Text", lcd.FONT_Default, 0x209395, rotate=0)
+circle0 = M5Circle(10, 37, 5, 0xffffff, 0xffffff)
+rectangle0 = M5Rect(9, 20, 2, 20, 0xffffff, 0xffffff)
+rectangle1 = M5Rect(10, 26, 5, 2, 0xffffff, 0xffffff)
+rectangle2 = M5Rect(10, 20, 5, 2, 0xffffff, 0xffffff)
+rectangle3 = M5Rect(10, 30, 5, 2, 0xffffff, 0xffffff)
+
+import math
+from numbers import Number
+
+Record = None
+
+def buttonA_wasPressed():
+  global Record, Current
+  Record = Current
+  # if notify:
+  m5mqtt.publish("@msg/tmp", "{'rec':'"+str(Current)+"'}")
+btnA.wasPressed(buttonA_wasPressed)
+
+
+TempMin = -1
+TempMax = -1
+CurY = 105
+DisplayMin = -30
+DispalyMax = 60
+T_line = 1
+Y_BASE = 95
+Current = -10
+lcd.rect(0, 55, 80, 51, fillcolor=0x000000)
+lcd.line(0, 54, 0, 105, 0x000000)
+lcd.line(0, 106, 80, 106, 0x000000)
+
+while True:
+  Current = hat_ncir0.temperature
+  label0.setText(str(Current))
+  if TempMax == -1 and  TempMin == -1:
+    TempMin = Current
+    TempMax = Current
+  elif Current > DispalyMax or Current < DisplayMin:
+    continue
+  else: 
+    if Current > TempMax:
+      TempMax = Current
+      if notify:
+        m5mqtt.publish("@msg/tmp", "{'Max':'"+str(TempMax)+"'}")
+    elif Current < TempMin:
+      TempMin = Current
+      if notify:
+        m5mqtt.publish("@msg/tmp", "{'Min':'"+str(TempMin)+"'}")
+        
+    label1.setText(str((str('MAX:') + str(str(TempMax)))))
+    label2.setText(str((str('MIN:') + str(str(TempMin)))))
+    label3.setText(str((str('REC:') + str(str(Record)))))
+    
+    CurY = Y_BASE - math.floor(Current)
+    lcd.line(T_line, CurY, T_line, 105, 0x3366ff)
+    T_line = (T_line if isinstance(T_line, Number) else 0) + 1
+    wait_ms(sec)
+    
+    if T_line > 80:
+      lcd.rect(0, 55, 80, 50, fillcolor=0x000000)
+      T_line = 0
+      
+    wait_ms(200)
+    if notify:
+      m5mqtt.publish("@msg/tmp", "{'Temp':'"+str(Current)+"'}")

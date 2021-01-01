@@ -9,5 +9,5 @@
 
 
 ## Screenshot :iphone:
-<img src="https://raw.githubusercontent.com/keirace/temp_sensor/main/static/S__27501184.jpg" width="400">
+<img src="https://raw.githubusercontent.com/keirace/temp_sensor/main/static/S__27501184.jpg" width="300">
 

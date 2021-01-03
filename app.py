@@ -64,7 +64,7 @@ def follow(event):
     line_bot_api.push_message(
         event.source.user_id,
         [
-            TextSendMessage("Hello, %s this is LINE TempSensor" % profile.display_name),
+            TextSendMessage("Hello, %s. this is LINE TempSensor" % profile.display_name),
             StickerSendMessage(package_id="11539", sticker_id="52114131"),
             FlexSendMessage(alt_text="Options", contents=carousel)
         ]

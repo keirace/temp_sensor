@@ -1,0 +1,284 @@
+{
+    "carousel": {
+        "type": "carousel",
+        "contents": [
+            {
+                "type": "bubble",
+                "size": "kilo",
+                "hero": {
+                    "type": "image",
+                    "url": "https://i.ibb.co/dgwNg5n/7.jpg",
+                    "margin": "none",
+                    "align": "center",
+                    "size": "5xl",
+                    "aspectRatio": "1:1",
+                    "aspectMode": "cover",
+                    "backgroundColor": "#9DB9D6FF",
+                    "position": "relative"
+                },
+                "footer": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "flex": 0,
+                    "spacing": "sm",
+                    "position": "relative",
+                    "contents": [
+                        {
+                            "type": "button",
+                            "action": {
+                                "type": "message",
+                                "label": "CLICK HERE",
+                                "text": "temp now"
+                            },
+                            "color": "#FFFFFF",
+                            "style": "secondary",
+                            "position": "relative"
+                        }
+                    ]
+                },
+                "styles": {
+                    "hero": {
+                        "backgroundColor": "#9DB9D6FF",
+                        "separator": false
+                    },
+                    "footer": {
+                        "backgroundColor": "#9DB9D6FF",
+                        "separator": false
+                    }
+                }
+            },
+            {
+                "type": "bubble",
+                "size": "kilo",
+                "direction": "ltr",
+                "hero": {
+                    "type": "image",
+                    "url": "https://i.ibb.co/LSK0Vrp/8.jpg",
+                    "size": "5xl",
+                    "aspectRatio": "1:1",
+                    "aspectMode": "cover",
+                    "position": "relative"
+                },
+                "footer": {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "position": "relative",
+                    "contents": [
+                        {
+                            "type": "button",
+                            "action": {
+                                "type": "message",
+                                "label": "TURN ON/OFF",
+                                "text": "notify me"
+                            },
+                            "color": "#FFFFFFFF",
+                            "style": "secondary",
+                            "position": "relative"
+                        }
+                    ]
+                },
+                "styles": {
+                    "hero": {
+                        "backgroundColor": "#9DB9D6FF",
+                        "separator": false,
+                        "separatorColor": "#9DB9D6FF"
+                    },
+                    "footer": {
+                        "backgroundColor": "#9DB9D6FF",
+                        "separator": false,
+                        "separatorColor": "#9DB9D6FF"
+                    }
+                }
+            },
+            {
+                "type": "bubble",
+                "size": "kilo",
+                "direction": "ltr",
+                "hero": {
+                    "type": "image",
+                    "url": "https://i.ibb.co/tpBxqLf/graph.jpg",
+                    "size": "5xl",
+                    "aspectRatio": "1:1",
+                    "aspectMode": "cover",
+                    "position": "relative"
+                },
+                "footer": {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "position": "relative",
+                    "contents": [
+                        {
+                            "type": "button",
+                            "action": {
+                                "type": "message",
+                                "label": "CLICK HERE",
+                                "text": "graph"
+                            },
+                            "color": "#FFFFFFFF",
+                            "style": "secondary",
+                            "position": "relative"
+                        }
+                    ]
+                },
+                "styles": {
+                    "hero": {
+                        "backgroundColor": "#9DB9D6FF",
+                        "separator": false,
+                        "separatorColor": "#9DB9D6FF"
+                    },
+                    "footer": {
+                        "backgroundColor": "#9DB9D6FF",
+                        "separator": false,
+                        "separatorColor": "#9DB9D6FF"
+                    }
+                }
+            }
+        ]
+    },
+    "notification": {
+        "type": "bubble",
+        "direction": "ltr",
+        "header": {
+          "type": "box",
+          "layout": "vertical",
+          "paddingTop": "2%",
+          "paddingBottom": "2%",
+          "contents": [
+            {
+              "type": "text",
+              "text": "Update%20Max",
+              "weight": "bold",
+              "color": "#FFFFFFFF",
+              "align": "start",
+              "contents": []
+            }
+          ]
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "paddingTop": "2%",
+          "paddingBottom": "2%",
+          "contents": [
+            {
+              "type": "text",
+              "text": "45.25%20%C2%B0C%2C%2045.25%20%C2%B0F%2C%2045.25%20K",
+              "color": "#08418D",
+              "flex": 3,
+              "align": "start",
+              "contents": []
+            }
+          ]
+        },
+        "styles": {
+          "header": {
+            "backgroundColor": "#9DB9D6FF",
+            "separator": false
+          },
+          "body": {
+            "backgroundColor": "#EBEEFF",
+            "separator": false
+          }
+        }
+      },
+    "length": {
+        "type": "bubble",
+        "direction": "ltr",
+        "header": {
+          "type": "box",
+          "layout": "vertical",
+          "paddingTop": "3%",
+          "paddingBottom": "3%",
+          "contents": [
+            {
+              "type": "text",
+              "text": "Choose graph duration",
+              "weight": "bold",
+              "size": "lg",
+              "color": "#FFFFFFFF",
+              "align": "center",
+              "contents": []
+            }
+          ]
+        },
+        "footer": {
+          "type": "box",
+          "layout": "horizontal",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "horizontal",
+              "flex": 1,
+              "contents": [
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "10",
+                    "text": "10"
+                  },
+                  "flex": 1,
+                  "style": "secondary"
+                },
+                {
+                  "type": "separator",
+                  "margin": "sm",
+                  "color": "#9DB9D6FF"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "15",
+                    "text": "15"
+                  },
+                  "flex": 1,
+                  "style": "secondary"
+                },
+                {
+                  "type": "separator",
+                  "margin": "sm",
+                  "color": "#9DB9D6FF"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "20",
+                    "text": "20"
+                  },
+                  "flex": 1,
+                  "style": "secondary"
+                },
+                {
+                  "type": "separator",
+                  "margin": "sm",
+                  "color": "#9DB9D6FF"
+                },
+                {
+                  "type": "button",
+                  "action": {
+                    "type": "message",
+                    "label": "30",
+                    "text": "30"
+                  },
+                  "flex": 1,
+                  "style": "secondary"
+                }
+              ]
+            }
+          ]
+        },
+        "styles": {
+          "header": {
+            "backgroundColor": "#9DB9D6FF",
+            "separator": false,
+            "separatorColor": "#FFFFFFFF"
+          },
+          "footer": {
+            "backgroundColor": "#9DB9D6FF",
+            "separator": false
+          }
+        }
+      }
+}

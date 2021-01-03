@@ -115,5 +115,5 @@ while True:
       T_line = 0
       
     wait_ms(200)
-    if notify:
-      m5mqtt.publish("@msg/tmp", "{'Temp':'"+str(Current)+"'}")
+
+    m5mqtt.publish("@msg/tmp", "{'Temp':'"+str(Current)+"'}")

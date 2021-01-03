@@ -7,8 +7,11 @@ from pyngrok import ngrok
 from threading import Thread
 import paho.mqtt.client as mqtt
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import json
+import time
 
 
 app = Flask(__name__, static_url_path="/static")
@@ -35,6 +38,7 @@ time = 60
 topic = "@msg/settings"
 ls = []
 
+# read flex templates from json
 carousel = json.loads(open("flex.json", 'rb').read().decode('utf8'))["carousel"]
 flex = json.loads(open("flex.json", 'rb').read().decode('utf8'))["notification"]
 
@@ -57,6 +61,10 @@ def callback():
         print(err)
     return "OK"
 
+####################################################################################
+#   Follow Event Handler
+####################################################################################
+
 @handler.add(FollowEvent)
 def follow(event):
     profile = line_bot_api.get_profile(event.source.user_id)
@@ -72,7 +80,7 @@ def follow(event):
     line_bot_api.link_rich_menu_to_user('richmenu-12845d8500ffca1300a28355bd3f4580')
 
 ####################################################################################
-#   Message Handler
+#   Message Event Handler
 ####################################################################################
 
 @handler.add(MessageEvent, message=TextMessage)
@@ -109,6 +117,7 @@ def message_text(event):
                 FlexSendMessage("Graph duration", length)
             )
             graph = True
+
         if graph:
             if msg.isnumeric() and int(msg) <= 60:
                 global time 
@@ -132,6 +141,7 @@ def message_text(event):
             else: 
                 line_bot_api.reply_message(event.reply_token, "Graph canceled, please provide number (max:60)")
                 graph=False
+
         if msg == "notify me" and not notify:
             line_bot_api.reply_message(
                 event.reply_token, TextSendMessage(text="Notify every how many sec?")
@@ -189,12 +199,21 @@ def graph_creator(wait):
     while len(ls) < time:
         pass
     plt.style.use('ggplot')
+    # plt.ylabel('Temp (°c)')
+    # plt.xlabel('Time (s)')
+    fig, ax = plt.subplots()
+    # ax.title("Temperature graph")
     if len(ls) > time:
-        new_ls = ls[60-time:60]
-        plt.bar(y_pos, new_ls, color=(0.4, 0.5, 0.6, 0.6))
+        new_ls=[]
+        new_ls = ls[len(ls)-1-time:len(ls)-1]
+        print(len(new_ls))
+        lines, = ax.plot(y_pos, new_ls, linewidth=2, color=(0.4, 0.5, 0.6, 0.6))
+        # plt.bar(y_pos, new_ls, color=(0.4, 0.5, 0.6, 0.6))
     else:
-        plt.bar(y_pos, ls, color=(0.4, 0.5, 0.6, 0.6))
-    plt.savefig("static/graph.png")
+        lines, = ax.plot(y_pos, ls, linewidth=2, color=(0.4, 0.5, 0.6, 0.6))
+        # plt.bar(y_pos, ls, color=(0.4, 0.5, 0.6, 0.6))
+    fig.savefig("static/graph.png")
+    plt.close(fig)
     publish('fin_graph')
     new_url = endpoint + '/static/graph.png'
     if wait:
@@ -249,20 +268,28 @@ def on_message(client, userdata, msg):
     global ls, userID, max_temp, min_temp, typ, inp
     inp = msg.payload.decode("utf-8")
     typ, temp = get_message()
+
+    # set received input as current temperature.
     if typ == "Current" or typ == "Temp":
         global current
         current = temp
-    if notify or typ=='Rec':
+
+        # save temperature in queue [max:60] for graph output.
+        if typ == 'Temp':
+            if len(ls) == time:
+                ls.pop(0)
+            ls.append(float(temp))
+
+    # notify user if record button is pressed or user has turned on notification.
+    if notify or typ== 'Rec':
         notification(typ, temp)
+    
+    # we receive the report right after user has canceled the notification.
     if typ == 'ReportMax' or typ == 'ReportMin':
         if typ == 'ReportMax':
             max_temp = temp
         elif typ == 'ReportMin':
             min_temp = temp
-    if typ == 'Temp':
-        if len(ls) == time:
-            ls.pop(0)
-        ls.append(float(temp))
     
 
 def publish(msg):
